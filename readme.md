@@ -70,6 +70,8 @@ Traitors/
 │
 └── README.md
 
+```
+
 ## Local Setup Instructions
 
 ### 1. Prerequisites
