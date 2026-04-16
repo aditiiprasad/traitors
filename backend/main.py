@@ -63,6 +63,25 @@ async def user_message(msg: MessageInput):
             
     return game_state
 
+@app.post("/ai-message")
+async def trigger_ai_message():
+    global game_state
+    
+    # Only speak autonomously during the day
+    if game_state.phase != "day":
+        return game_state
+        
+    alive_ais = [p for p in game_state.players if p.alive and p.id != "p1"]
+    
+    if alive_ais:
+        # Pick ONE random AI to speak up to keep it feeling natural
+        import random
+        ai = random.choice(alive_ais)
+        ai_reply = generate_ai_response(ai, game_state.players, game_state.chat_history)
+        game_state.chat_history.append({"sender": ai.name, "message": ai_reply})
+        
+    return game_state
+
 class VoteInput(BaseModel):
     voted_for_id: str
 

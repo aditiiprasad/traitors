@@ -26,6 +26,7 @@ function App() {
     setTimeLeft(90); 
   };
 
+  // 1. COUNTDOWN TIMER LOGIC
   useEffect(() => {
     if (!gameState) return;
     if (gameState.phase === 'day' && timeLeft > 0) {
@@ -46,6 +47,22 @@ function App() {
     }
   }, [timeLeft, gameState?.phase]);
 
+
+  // 2. FIXED: AUTONOMOUS AI HEARTBEAT
+  useEffect(() => {
+    let aiInterval;
+    if (gameState?.phase === 'day') {
+      // Set to 8 seconds. Removed 'timeLeft' from dependencies so it doesn't reset!
+      aiInterval = setInterval(async () => {
+        await axios.post(`${API_URL}/ai-message`);
+        fetchState();
+      }, 8000); 
+    }
+    return () => clearInterval(aiInterval);
+  }, [gameState?.phase]); // <--- Fixed dependency array here!
+
+  
+  // 3. AUTO-SCROLL LOGIC
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [gameState?.chat_history]);
@@ -84,7 +101,7 @@ function App() {
       <GameHUD phase={gameState.phase} timeLeft={timeLeft} round={gameState.round} />
       
       {/* GAME GRID */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-6 min-h-0">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-6 h-[550px] min-h-[550px] max-h-[550px]">
         
         {/* LEFT: Players */}
         <div className="md:col-span-1">
