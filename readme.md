@@ -1,16 +1,35 @@
-# AI Mafia – Interactive Multi-Agent Deception Game
+# Traitors – Interactive Multi-Agent Deception Game
+
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)
+![React](https://img.shields.io/badge/React-18.0+-61DAFB.svg)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.0+-38B2AC.svg)
+![Groq](https://img.shields.io/badge/Groq-LLM_Inference-f55036.svg)
+
+> ![Game Screenshot](demo/1.png)
 
 ## Project Overview
 
-Traitors is a full-stack, stateful web application that simulates a multi-agent environment where a human user interacts with autonomous AI agents powered by Large Language Models (LLMs). Operating under the mechanics of the classic social deduction game "Mafia" (or "Traitors"), the system requires agents to engage in natural language discussion, logical reasoning, and strategic deception under conditions of partial observability.
+Traitors is a full-stack, stateful web application that simulates a multi-agent environment where a human user interacts with autonomous AI agents powered by Large Language Models (LLMs). Operating under the mechanics of the classic social deduction game "Mafia," the system requires agents to engage in natural language discussion, logical reasoning, and strategic deception under conditions of partial observability.
 
-Crucially, this project is engineered from first principles. It deliberately avoids high-level agent orchestration frameworks like LangChain or AutoGPT. Instead, all memory management, prompt construction, agent-to-agent interaction logic, and game state transitions are handled via a custom Python backend architecture.
+Crucially, this project is engineered from first principles. It deliberately **avoids high-level agent orchestration frameworks** like LangChain or AutoGPT. Instead, all memory management, prompt construction, agent-to-agent interaction logic, and game state transitions are handled via a custom Python backend architecture.
+
+<p align="center">
+  <img src="demo/6.png" height="250" />
+  <img src="demo/3.png" height="250" />
+  <img src="demo/4.png" height="250"/>
+</p>
+
+<p align="center">
+  <img src="demo/2.png" height="250" />
+  
+</p>
 
 ## Tech Stack
 
 **Frontend Architecture:**
 * React (via Vite)
-* Tailwind CSS
+* Tailwind CSS (Custom Neo-Retro / Pixel UI)
 * Axios (HTTP Client)
 
 **Backend Architecture:**
@@ -22,6 +41,8 @@ Crucially, this project is engineered from first principles. It deliberately avo
 **AI & Natural Language Processing:**
 * Groq API (High-speed Llama 3 / Mixtral inference)
 * Custom Prompt Engineering Pipeline
+
+---
 
 ## Project Structure
 
@@ -39,7 +60,7 @@ Traitors/
 ├── frontend/
 │   ├── public/
 │   ├── src/
-│   │   ├── components/    # Reusable UI components (StartScreen, etc.)
+│   │   ├── components/    # Modular UI components (StartScreen, GameHUD, etc.)
 │   │   ├── App.jsx        # Main React component and timer logic
 │   │   ├── index.css      # Global styles and Tailwind imports
 │   │   └── main.jsx       # React DOM mount point
@@ -48,7 +69,6 @@ Traitors/
 │   └── vite.config.js     # Build tool configuration
 │
 └── README.md
-```
 
 ## Local Setup Instructions
 
@@ -163,3 +183,10 @@ The intelligence of the system relies on structured context injection and behavi
 * **Pydantic:** Essential for validating the complex, nested JSON objects passed between the React frontend and the Python backend. It prevents runtime crashes caused by malformed state updates.
 * **Groq API:** Chosen specifically for its ultra-low latency inference (Llama 3 architectures). In an interactive chat simulation, standard LLM APIs (taking 3-5 seconds per generation) destroy the illusion of real-time multi-user interaction. Groq processes these tokens in milliseconds.
 * **React:** Utilized for its robust Virtual DOM and declarative state-driven UI. Given that the game state changes rapidly (timers, chat updates, vote tracking, status changes), React efficiently re-renders only the modified components without requiring full page reloads.
+
+### 6. Future Enhancements
+* WebSockets Integration: Transition from HTTP polling to WebSockets for instant, real-time UI updates across all clients.
+
+* Vector Database Memory: Integrate ChromaDB or Pinecone to give agents long-term memory across multiple game rounds.
+
+* Multiplayer Support: Allow multiple human users to join the same lobby alongside the AI agents.

@@ -1,39 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import "tailwindcss";
 
-
-
-
-body {
-  font-family: 'Press Start 2P', cursive;
-  background-color: #335c67; /* Dark Teal */
-  color: #fff3b0; /* Light Text */
-  /* Create a subtle retro pixel grid background */
-  background-image: 
-    linear-gradient(#2a4d56 2px, transparent 2px),
-    linear-gradient(90deg, #2a4d56 2px, transparent 2px);
-  background-size: 32px 32px;
-  background-position: center center;
-}
-
-/* Chunky Retro Scrollbar */
-::-webkit-scrollbar {
-  width: 16px;
-}
-::-webkit-scrollbar-track {
-  background: #540b0e; 
-  border-left: 4px solid black;
-}
-::-webkit-scrollbar-thumb {
-  background: #e09f3e; 
-  border: 4px solid black;
-}
-::-webkit-scrollbar-thumb:active {
-  background: #9e2a2b;
-}
-
-
-
 @theme {
   --color-ludoRed: #EF4444;
   --color-ludoBlue: #3B82F6;
@@ -41,6 +8,74 @@ body {
   --color-ludoYellow: #FBBF24;
   --color-ludoBg: #F8FAFC;
   --color-ludoDark: #1E293B;
-
   --font-sans: "Inter", system-ui, sans-serif;
+}
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #335c67;
+  /* Dark Teal */
+  color: #fff3b0;
+  /* Light Text */
+
+  /* Retro pixel grid background */
+  background-image:
+    linear-gradient(#2a4d56 2px, transparent 2px),
+    linear-gradient(90deg, #2a4d56 2px, transparent 2px);
+  background-size: 32px 32px;
+  background-position: center center;
+
+  /* 🎮 CUSTOM CURSOR: Global Default */
+  cursor: url('/cursor.cur'), auto;
+}
+
+/* 🎮 CUSTOM CURSOR: Interactive Elements */
+button,
+input[type="submit"],
+input[type="button"],
+a,
+.cursor-pointer {
+  /* Forces the custom cursor even when hovering over buttons */
+  cursor: url('/cursor.cur'), pointer !important;
+}
+
+/* Keep the standard text cursor for input fields so it's easy to type */
+input[type="text"] {
+  cursor: text;
+}
+
+/* Chunky Retro Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #540b0e;
+  border-left: 4px solid black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e09f3e;
+  border: 4px solid black;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #9e2a2b;
+}
+
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.blink {
+  animation: blink 1s infinite;
 }

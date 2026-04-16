@@ -23,7 +23,7 @@ function App() {
   const startGame = async (name) => {
     const res = await axios.post(`${API_URL}/start-game?user_name=${name}`);
     setGameState(res.data);
-    setTimeLeft(90); 
+    setTimeLeft(90);
   };
 
   // 1. COUNTDOWN TIMER LOGIC
@@ -42,8 +42,8 @@ function App() {
       const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
       return () => clearTimeout(timer);
     } else if (gameState.phase === 'voting' && timeLeft === 0) {
-      const me = gameState.players.find(p => p.id === 'p1');
-      if (me?.alive) axios.post(`${API_URL}/vote`, { voted_for_id: "p2" }).then(fetchState); 
+
+      axios.post(`${API_URL}/vote`, { voted_for_id: "p2" }).then(fetchState);
     }
   }, [timeLeft, gameState?.phase]);
 
@@ -56,12 +56,12 @@ function App() {
       aiInterval = setInterval(async () => {
         await axios.post(`${API_URL}/ai-message`);
         fetchState();
-      }, 8000); 
+      }, 8000);
     }
     return () => clearInterval(aiInterval);
   }, [gameState?.phase]); // <--- Fixed dependency array here!
 
-  
+
   // 3. AUTO-SCROLL LOGIC
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -71,7 +71,7 @@ function App() {
     e.preventDefault();
     if (!chatInput.trim()) return;
     const msg = chatInput;
-    setChatInput(''); 
+    setChatInput('');
     await axios.post(`${API_URL}/user-message`, { message: msg });
     fetchState();
   };
@@ -99,10 +99,10 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col p-4 md:p-8 max-w-7xl mx-auto w-full">
       <GameHUD phase={gameState.phase} timeLeft={timeLeft} round={gameState.round} />
-      
+
       {/* GAME GRID */}
       <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-6 h-[550px] min-h-[550px] max-h-[550px]">
-        
+
         {/* LEFT: Players */}
         <div className="md:col-span-1">
           <PlayerPanel players={gameState.players} />
@@ -110,8 +110,8 @@ function App() {
 
         {/* CENTER: Chat */}
         <div className="md:col-span-2">
-          <ChatWindow 
-            chatHistory={gameState.chat_history} 
+          <ChatWindow
+            chatHistory={gameState.chat_history}
             chatRef={chatEndRef}
             phase={gameState.phase}
             isAlive={me?.alive}
@@ -124,7 +124,7 @@ function App() {
 
         {/* RIGHT: Actions / Voting */}
         <div className="md:col-span-1">
-          <VotingPanel 
+          <VotingPanel
             phase={gameState.phase}
             isAlive={me?.alive}
             players={gameState.players}
