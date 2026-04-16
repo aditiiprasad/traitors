@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
 body {
-  background-color: #111827; /* gray-900 */
+  background-color: #F8FAFC;
+  color: #1E293B;
+}
+
+/* Playful rounded scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #E2E8F0;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #94A3B8;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+@theme {
+  --color-ludoRed: #EF4444;
+  --color-ludoBlue: #3B82F6;
+  --color-ludoGreen: #22C55E;
+  --color-ludoYellow: #FBBF24;
+  --color-ludoBg: #F8FAFC;
+  --color-ludoDark: #1E293B;
+
+  --font-sans: "Inter", system-ui, sans-serif;
 }
