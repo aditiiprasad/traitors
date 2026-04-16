@@ -115,6 +115,52 @@ function App() {
       Send
     </button>
   </form>
+
+
+  {/* Voting Interface */}
+<div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-md col-span-1 md:col-span-3 mt-2">
+  {gameState.phase === 'day' && (
+    <div className="flex justify-center">
+      <button 
+        onClick={async () => {
+          await axios.post(`${API_URL}/start-voting`);
+          fetchState();
+        }}
+        className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded shadow transition-all"
+      >
+        End Day & Start Voting
+      </button>
+    </div>
+  )}
+
+  {gameState.phase === 'voting' && (
+    <div>
+      <h3 className="text-xl font-bold text-center text-red-400 mb-4">Cast Your Vote</h3>
+      <div className="flex flex-wrap justify-center gap-4">
+        {gameState.players.filter(p => p.alive && p.id !== 'p1').map(p => (
+          <button
+            key={p.id}
+            onClick={async () => {
+              await axios.post(`${API_URL}/vote`, { voted_for_id: p.id });
+              fetchState();
+            }}
+            className="bg-red-800 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded border border-red-600 transition-all"
+          >
+            Vote {p.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {gameState.phase === 'night' && (
+    <div className="text-center text-gray-400 italic">
+      The town goes to sleep... (Night phase logic coming soon)
+    </div>
+  )}
+</div>
+
+
 </div>
             </div>
           </div>

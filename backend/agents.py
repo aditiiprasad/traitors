@@ -40,3 +40,30 @@ def generate_ai_response(player, players_list, chat_history):
     except Exception as e:
         print(f"Groq API Error: {e}")
         return "Uh... I lost my train of thought."
+    
+from prompts import get_system_prompt, get_voting_prompt # Update your import at the top
+
+def generate_ai_vote(player, players_list, chat_history):
+    # Only list other alive players as valid targets
+    valid_targets = [p for p in players_list if p.alive and p.id != player.id]
+    players_str = ", ".join([p.name for p in valid_targets])
+    
+    # Grab the last 15 messages for context
+    chat_str = "\n".join([f"{msg['sender']}: {msg['message']}" for msg in chat_history[-15:]])
+
+    prompt = get_voting_prompt(player.role, players_str, chat_str)
+
+    try:
+        vote_completion = client.chat.completions.create(
+            messages=[{"role": "system", "content": prompt}],
+            model="llama-3.1-8b-instant",
+            temperature=0.2, # Low temperature so it doesn't get creative with names
+            max_tokens=15,
+        )
+        vote_result = vote_completion.choices[0].message.content.strip()
+        return vote_result
+    except Exception as e:
+        print(f"Vote Error: {e}")
+        # Fallback: vote randomly if the API fails
+        import random
+        return random.choice(valid_targets).name if valid_targets else ""

@@ -20,3 +20,18 @@ Players Alive: {players}
 Chat History: {chat_history}
 
 Respond with ONLY your chat message. Do not include your name or any actions."""
+
+def get_voting_prompt(role: str, players: str, chat_history: str) -> str:
+    return f"""Based on the conversation below, vote for the MOST suspicious player.
+
+Game Rules:
+- If you are Mafia, try to vote for Villagers. Do NOT vote for other Mafia members.
+- If you are a Villager, vote for who you think is lying.
+
+Your Role: {role}
+Players Alive: {players}
+
+Chat History:
+{chat_history}
+
+Return ONLY the exact name of the player you are voting for. No explanation, no punctuation."""

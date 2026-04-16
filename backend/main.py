@@ -5,7 +5,8 @@ from models import GameState, Player
 import random
 
 # NEW IMPORTS
-from agents import generate_ai_response
+
+from agents import generate_ai_response, generate_ai_vote
 
 app = FastAPI()
 
@@ -60,4 +61,54 @@ async def user_message(msg: MessageInput):
             ai_reply = generate_ai_response(ai, game_state.players, game_state.chat_history)
             game_state.chat_history.append({"sender": ai.name, "message": ai_reply})
             
+    return game_state
+
+# Add this new Pydantic model near the top with your MessageInput
+class VoteInput(BaseModel):
+    voted_for_id: str
+
+# Add these endpoints at the bottom of the file
+@app.post("/start-voting")
+async def start_voting():
+    global game_state
+    game_state.phase = "voting"
+    game_state.chat_history.append({
+        "sender": "SYSTEM", 
+        "message": "The town is now voting. Who is the Mafia?"
+    })
+    return game_state
+
+@app.post("/vote")
+async def process_votes(vote: VoteInput):
+    global game_state
+    
+    # Dictionary to tally votes {player_id: vote_count}
+    vote_tally = {}
+    vote_tally[vote.voted_for_id] = 1 # Human vote
+    
+    alive_ais = [p for p in game_state.players if p.alive and p.id != "p1"]
+    
+    # Gather AI votes
+    for ai in alive_ais:
+        ai_vote_name = generate_ai_vote(ai, game_state.players, game_state.chat_history)
+        
+        # Match the text name returned by Groq to a player ID
+        target = next((p for p in game_state.players if p.name.lower() in ai_vote_name.lower()), None)
+        if target:
+            vote_tally[target.id] = vote_tally.get(target.id, 0) + 1
+            
+    # Figure out who got the most votes
+    if vote_tally:
+        eliminated_id = max(vote_tally, key=vote_tally.get)
+        
+        for p in game_state.players:
+            if p.id == eliminated_id:
+                p.alive = False
+                game_state.chat_history.append({
+                    "sender": "SYSTEM", 
+                    "message": f"{p.name} was voted out! They were a {p.role}."
+                })
+                
+    # Move to the next phase (night)
+    game_state.phase = "night"
     return game_state
