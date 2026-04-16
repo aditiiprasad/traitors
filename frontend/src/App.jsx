@@ -5,6 +5,7 @@ const API_URL = 'http://localhost:8000'
 
 function App() {
   const [gameState, setGameState] = useState(null)
+  const [chatInput, setChatInput] = useState('')
 
   const fetchState = async () => {
     try {
@@ -66,10 +67,55 @@ function App() {
                 </ul>
               </div>
 
-              {/* Chat Placeholder */}
-              <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-md col-span-2 flex items-center justify-center">
-                <p className="text-gray-500 italic">Chat interface goes here...</p>
-              </div>
+    
+
+{/* Chat Interface */}
+<div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-md col-span-2 flex flex-col h-[500px]">
+  <h3 className="text-xl font-bold border-b border-gray-600 pb-2 mb-4 text-gray-300">Town Square</h3>
+  
+  {/* Messages Area */}
+  <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+    {gameState.chat_history.length === 0 ? (
+      <p className="text-gray-500 italic text-center mt-10">The town is quiet... say something.</p>
+    ) : (
+      gameState.chat_history.map((msg, idx) => (
+        <div key={idx} className={`p-3 rounded-lg ${msg.sender === 'Human (You)' ? 'bg-blue-900/50 ml-8' : 'bg-gray-700 mr-8'}`}>
+          <span className="font-bold text-sm text-gray-400 block mb-1">{msg.sender}</span>
+          <p className="text-gray-100">{msg.message}</p>
+        </div>
+      ))
+    )}
+  </div>
+
+  {/* Input Area */}
+  <form 
+    onSubmit={async (e) => {
+      e.preventDefault();
+      if (!chatInput.trim()) return;
+      
+      const msg = chatInput;
+      setChatInput(''); // Clear input immediately
+      
+      await axios.post(`${API_URL}/user-message`, { message: msg });
+      fetchState(); // Refresh chat
+    }} 
+    className="flex gap-2 pt-2 border-t border-gray-600"
+  >
+    <input
+      type="text"
+      value={chatInput}
+      onChange={(e) => setChatInput(e.target.value)}
+      placeholder="Accuse someone..."
+      className="flex-1 bg-gray-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+    />
+    <button 
+      type="submit"
+      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all"
+    >
+      Send
+    </button>
+  </form>
+</div>
             </div>
           </div>
         )}
