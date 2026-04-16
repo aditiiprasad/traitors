@@ -3,6 +3,7 @@ import { useState } from 'react';
 export default function StartScreen({ onStart }) {
   const [name, setName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
@@ -10,6 +11,9 @@ export default function StartScreen({ onStart }) {
       <h1 className="text-5xl md:text-7xl text-[#e09f3e] mb-12 text-center tracking-widest" style={{ textShadow: '6px 6px 0 #000' }}>
         TRAITORS
       </h1>
+      <p className="text-[#fff3b0] text-sm md:text-lg mb-8 tracking-widest text-center opacity-80">
+        PLAY. DECEIVE. SURVIVE.  WITH AI BOTS
+      </p>
 
       <div className="flex gap-4 mb-8">
         <a
@@ -47,11 +51,32 @@ export default function StartScreen({ onStart }) {
           />
 
           <button
-            onClick={() => onStart(name || 'PLAYER')}
-            className="w-full bg-[#e09f3e] text-[#540b0e] border-4 border-black p-5 text-base font-black shadow-[4px_4px_0_#000] hover:bg-[#fff3b0] active:translate-y-[4px] active:translate-x-[4px] active:shadow-none transition-none"
+            onClick={() => {
+              setIsLoading(true);
+              onStart(name || 'PLAYER');
+            }}
+            disabled={isLoading}
+            className="w-full bg-[#e09f3e] text-[#540b0e] border-4 border-black p-5 text-base font-black 
+  shadow-[4px_4px_0_#000] 
+  hover:bg-[#fff3b0] 
+  active:translate-y-[4px] active:translate-x-[4px] active:shadow-none 
+  disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            START GAME
+            {isLoading ? "CONNECTING..." : "START GAME"}
           </button>
+          {isLoading && (
+            <div className="mt-6 flex flex-col items-center gap-3">
+
+              {/* Spinner */}
+              <div className="w-8 h-8 border-4 border-black border-t-[#9e2a2b] animate-spin"></div>
+
+              {/* Warning text */}
+              <p className="text-[#fff3b0] text-[10px] text-center bg-[#9e2a2b] px-3 py-2 border-2 border-black shadow-[2px_2px_0_#000] uppercase tracking-widest">
+                PLEASE WAIT — SERVER MAY TAKE TIME TO WAKE UP
+              </p>
+
+            </div>
+          )}
         </div>
 
         {/* RIGHT COLUMN: ACTIONS & INSTRUCTIONS */}
