@@ -22,10 +22,10 @@ async def start_game(user_name: str = "Player"):
     
     ai_names = ["Kabir Singh", "Kim Kardashian", "Lalu Prasad Yadav", "Elon Musk"]
     personalities = [
-        "Kabir Singh: Aggressive, passionate, uses intense and slightly angry language, deeply suspicious.",
-        "Kim Kardashian: Obsessed with drama and aesthetics, uses filler words like 'literally' and 'like', constantly shocked.",
-        "Lalu Prasad Yadav: Rustic, funny, uses political analogies and unique idioms, highly observant.",
-        "Elon Musk: Arrogant, talks about Mars, X, and logic, acts like the smartest person in the room."
+        "Kabir Singh: Aggressive and impatient. You accuse people without evidence and get defensive quickly. Keep sentences short.",
+        "Kim Kardashian: You are obsessed with finding the Traitor but talk like a reality star. You use 'literally' and 'like', and focus on who is acting 'shady'.",
+        "Lalu Prasad Yadav: You use funny, rustic analogies to accuse others of being the Traitor. You are highly suspicious of everyone.",
+        "Elon Musk: Arrogant and logical. You use probability and logic to deduce who the Traitor is. You act smarter than everyone else."
     ]
     
     for i, name in enumerate(ai_names):

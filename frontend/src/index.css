@@ -1,25 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import "tailwindcss";
 
+
+
+
 body {
-  background-color: #F8FAFC;
-  color: #1E293B;
+  font-family: 'Press Start 2P', cursive;
+  background-color: #335c67; /* Dark Teal */
+  color: #fff3b0; /* Light Text */
+  /* Create a subtle retro pixel grid background */
+  background-image: 
+    linear-gradient(#2a4d56 2px, transparent 2px),
+    linear-gradient(90deg, #2a4d56 2px, transparent 2px);
+  background-size: 32px 32px;
+  background-position: center center;
 }
 
-/* Playful rounded scrollbar */
+/* Chunky Retro Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 16px;
 }
 ::-webkit-scrollbar-track {
-  background: #E2E8F0;
-  border-radius: 10px;
+  background: #540b0e; 
+  border-left: 4px solid black;
 }
 ::-webkit-scrollbar-thumb {
-  background: #94A3B8;
-  border-radius: 10px;
+  background: #e09f3e; 
+  border: 4px solid black;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #3B82F6;
+::-webkit-scrollbar-thumb:active {
+  background: #9e2a2b;
 }
+
+
 
 @theme {
   --color-ludoRed: #EF4444;
